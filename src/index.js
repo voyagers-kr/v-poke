@@ -78,25 +78,28 @@ export function initBackend() {
         const input = data.toString().trim();
         const inputArray = input.split(' ');
         if(isQuizProcess) {
-            if (isNaN(parseInt(input, 10))) {
-                console.log('Please enter Pokemon number');
+            if (!isNaN(parseInt(input, 10))) {
+                console.log('Please enter Pokemon name');
             } else {
-                if (parseInt(input, 10) === randomInt) {
-                    console.log('great!');
-                    nowScore += randomInt;
-                    console.log(`your score is ${nowScore}`);
-                    randomInt = getRandomNumber();
-                    getHiddenPokeImageByNumber(randomInt)
-                    setTimeout(()=> {
-                        console.log('please commend pokemon num')
-                    }, 2000);
-                } else {
-                    console.log('fail....');
-                    console.log(`your score is ${nowScore}`);
-                    console.log('quiz end');
-                    isQuizProcess = false;
-                    nowScore = 0;
-                }
+                sendDataAndReceiveOutput(javaProcess, `number ${randomInt}`).then((output) => {
+                    const pokemonName = output.split(' ')[1];
+                    if (input === pokemonName) {
+                        console.log('great!');
+                        nowScore += randomInt;
+                        console.log(`your score is ${nowScore}`);
+                        randomInt = getRandomNumber();
+                        getHiddenPokeImageByNumber(randomInt)
+                        setTimeout(()=> {
+                            console.log('please commend pokemon num')
+                        }, 1000);
+                    } else {
+                        console.log(`fail.... this pokemon name was ${pokemonName}`);
+                        console.log(`your score is ${nowScore}`);
+                        console.log('quiz end');
+                        isQuizProcess = false;
+                        nowScore = 0;
+                    }
+                });
             }
         } else if (input === 'exit') {
             javaProcess.kill();
@@ -111,7 +114,7 @@ export function initBackend() {
                     await sendDataAndReceiveOutput(javaProcess, input).then((output) => {
                         setTimeout(() => {
                             console.log(output);
-                        }, 2000);
+                        }, 1000);
                         getPokeImageByNumber(target);
                     });
                 } else {
@@ -122,8 +125,7 @@ export function initBackend() {
                             sendDataAndReceiveOutput(javaProcess, `info ${targetIndex}`).then((output) => {
                                 setTimeout(() => {
                                     console.log(output);
-                                }, 2000);
-                                const outputArray = output.split(' ');
+                                }, 1000);
                                 getPokeImageByNumber(targetIndex);
                             });
                         } else {
@@ -138,7 +140,7 @@ export function initBackend() {
             getHiddenPokeImageByNumber(randomInt);
             setTimeout(()=> {
                 console.log('please commend pokemon num')
-            }, 2000);
+            }, 1000);
         } else {
             console.log("Please enter the correct command or exit!");
         }
@@ -146,7 +148,7 @@ export function initBackend() {
 
 // 자바 프로세스 종료 시 이벤트 핸들러
     javaProcess.on('close', (code) => {
-        console.log('Backend process exited');
+        console.log('Exited CLI Pokédex');
         process.exit();  // 자바 프로세스가 종료되면 Node.js도 종료
     });
 }
