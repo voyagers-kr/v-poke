@@ -1,10 +1,18 @@
 import { readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import asciiChanger from 'asciify-image';
+import fetch from 'node-fetch';
+
+// 기존의 fetch를 따로 저장
+const originalFetch = fetch;
+
+// ExperimentalWarning를 노출시키지 않기 때문에 fetch를 오버라이드
+global.fetch = (url, options) => {
+    return originalFetch(url, options);
+};
 
 export const getPokeImageByNumber = (number) => {
     const imageRequestUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${number}.png`
-    console.log(imageRequestUrl);
     getAscii(imageRequestUrl);
 }
 
