@@ -24,6 +24,7 @@
   "dependencies": {
     "asciify-image": "^0.1.10",
     "commander": "^11.1.0",
+    "njar": "^1.0.4",
     "node-fetch": "^2.7.0"
   }
 }
