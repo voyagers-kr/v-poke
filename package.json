@@ -20,7 +20,7 @@
     "prettier": "^3.1.0",
     "shipjs": "0.26.3"
   },
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
     "asciify-image": "^0.1.10",
     "commander": "^11.1.0",
