@@ -2,6 +2,12 @@ import { readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import asciiChanger from 'asciify-image';
 
+export const getPokeImageByNumber = (number) => {
+    const imageRequestUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${number}.png`
+    console.log(imageRequestUrl);
+    getAscii(imageRequestUrl);
+}
+
 
 export const getProjectVersion = () => {
 // version 값
